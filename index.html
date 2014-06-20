@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title> WebGL Study  (Under Construction...) </title>
+		<meta name="author" content="唐泽雄 中山大学软件学院 毕业论文"/>
+		<meta name="description" content="一个地球的3D模型制作"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/css.css">
+		<link rel="stylesheet" type="text/css" href="css/reset.css">
+		<link rel="stylesheet" type="text/css" href="css/onepage-scroll.css">
+		<!--分别引入Three.js,jquery.js,jquery.mousewheel.js,RequestAnimationFrame.js和sim.js库-->
+		<!--其中sim.js是由tony parisi写的一个轻量级WebGL框架，更好的来构建我们的地球模型-->
+		<script type="text/javascript" src="js/Three.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+		<script type="text/javascript" src="js/RequestAnimationFrame.js"></script>
+		<script type="text/javascript" src="js/sim.js"></script>
+		<script type="text/javascript" src="js/earthApp.js"></script>
+		<script type="text/javascript" src="js/video.js"></script>
+		<script type="text/javascript" src="js/animation.js"></script>
+		<script type="text/javascript" src="js/text.js"></script>
+		<script type="text/javascript" src="js/droid_sans_bold.typeface.js"></script>
+		<script type="text/javascript" src="js/optimer_bold.typeface.js"></script>
+		<script type="text/javascript" src="js/jquery.onepage-scroll.js"></script>
+		<script type="text/javascript" src="js/cubeImg.js"></script>
+		<script type="text/javascript" src="js/integration-object.js"></script>
+			<script type="text/javascript">
+				//下面分别初始化渲染器，场景，相机和网格，这是Three.js绘制三维图形的基本要素
+				var renderer = null;
+				var scene = null;
+				var camera = null;
+				var mesh = null;
+
+
+				$(document).ready(function(){
+					//使用DOM方法，把div#container存放于container变量
+					var container = document.getElementById("earth");
+					//创建EarthApp对象，详细参考earthApp.js的代码
+					var app = new EarthApp();
+					//初始化我们的EarthApp对象，把container传入
+					app.init({
+						container:container
+					});
+					//最后把我们的应用循环运行起来
+					app.run();
+				})
+			</script>
+
+			<script type="text/javascript">
+				var renderer = null;
+				var scene = null;
+				var camera = null;
+				var mesh = null;
+				
+				$(document).ready(
+					function() {
+						var container = document.getElementById("video");
+						var app = new VideoApp();
+						app.init({ container: container });
+						app.run();
+					}
+				);
+			</script>
+			<script type="text/javascript">
+				var renderer = null;
+				var scene = null;
+				var camera = null;
+				var mesh = null;
+				
+				$(document).ready(
+					function() {
+						var container = document.getElementById("text");
+						var app = new TextApp();
+						app.init({ container: container });
+						app.run();
+					}
+				);
+			</script>
+			<script type="text/javascript">
+				var renderer = null;
+				var scene = null;
+				var camera = null;
+
+				$(document).ready(
+					function(){
+						cubeImginit();
+					}
+				);
+			</script>
+			<script type="text/javascript">
+				var renderer = null;
+				var scene = null;
+				var camera = null;
+				var mesh = null;
+				var theApp = null;
+				
+				$(document).ready(
+					function() {
+						var container = document.getElementById("alien");
+						theApp = new ObjectApp();
+						theApp.init({ container: container });
+						theApp.run();
+					}
+				);
+			</script>
+			<!--[if lt IE 9]>
+		        <script src="js/html5shiv.min.js"></script>
+		        <script src="js/respond.min.js"></script>
+		    <![endif]-->
+	</head>
+	<body>
+		
+
+
+	<div class="main">
+
+		<section>
+			<video id="video1" autoplay loop style="display:none">
+				
+				<source src="source/Geri_Game.ogg" type='video/ogg;codecs="theora,vorbis"'>
+				<source src="source/Geri_Game.mp4">
+
+				<!--<source src="source/杀破狼.ogg" type='video/ogg;codecs="theora,vorbis"'>
+				<source src="source/杀破狼.mp4">-->
+				Your browser does not support the video element.
+			</video>
+			<div class="divIntroduction videoIntroduction">
+				<h1>↓视频纹理</h1>
+				<p>这个三维动画案例主要是在一个立方体上设置视频纹理来播放视频。温馨提示：鼠标放在立方体上，它会产生动画效果。你可以通过点击立方体来播放/暂停视频，另外也可以通过鼠标左键来旋转视角，鼠标右键来移动正方体</p>
+			    <p>视频是1997年获得奥斯卡最佳短篇电影奖的影片《棋逢敌手》(Geri's Game)。影片在一片落叶中开始，一位老人在秋风中独自摆好棋盘，一人孤独下棋，。老人自己一人反复扮演着桌旁的两位棋手，一位是老奸巨猾的高手，一位是沉默胆小的学者。整个影片没有一句对白，却在结尾出现了戏剧性的转折。影片虽然只有短短的4分钟，却留给人们无限的思考，人生如棋</p>
+		    </div>
+
+			<div id="video"></div>
+		</section>
+
+		<section>
+			<div class="divIntroduction cubeImgIntroduction">
+				<h1>↓图画纹理</h1>
+				<p>这个三维动画案例和上面的案例差不多，不过这里仅仅是在一个立方体上设置图片纹理。温馨提示：立方体一开始就是在转动的。你可以点击它来切换旋转/暂停的状态</p>
+		    </div>
+			<div id="cubeImg"></div>
+
+		</section>
+
+		<section>
+			<div class="divIntroduction textIntroduction">
+				<h1>↓三维文字</h1>
+			    <p>这个案例主要是通过WebGL来创建3D的文字。通过两种光源对文字的照射而产生好看的文字网格颜色的填充。首先创建了3D文字和一块透明地板，然后进行复制文字并倒转文字的操作来制作倒影效果。3D文字会自动旋转，你也可以手动点击它暂停/开始旋转</p>
+		    </div>
+			<div id="text"></div>
+		</section>
+
+
+
+		<section>
+			<!--<audio src="source/偶阵雨.mp3" controls loop>Your browser does not support the audio element.</audio>-->
+			<!--这个是存放3D图形的div块，WebGL是在HTML5 canvas画布元素上绘制的，但是Three.js框架会创建-->
+			<!--canvas元素，之后append到HTML DOM的#container元素上即可展现出来-->
+			<div class="divIntroduction earthIntroduction">
+				<h1>↓地月景观</h1>
+			    <p>这个案例也是一个WebGL的三维动画展示，它主要通过three.js的框架来完成。你可以看到地球表面的崎岖不平，明暗不一，还有地球外围的云层（它的旋转速度比地球自转速度慢），你还可以看到围绕着地球公转的月球，它始终一面朝着地球。另外在远处放着一个模拟的太阳光点，而背景则是由500颗恒星来构成的。温馨提示：你可以通过鼠标的左键调整观看的视角，可以通过鼠标的右键来移动地球和月球</p>
+		    </div>
+			<div id="earth"></div>
+
+		</section>
+		<section id="alienSection">
+			<div class="divIntroduction earthIntroduction">
+				<h1>↓外星人呀</h1>
+			    <p>外星人的网格是别人提供的，看了下模型网格的源代码，创建真心工程量大。幸亏我们可以借用别人的模型来，这个例子也是自己心血来潮放上来的而已。再去观摩观摩其他的，学习下，自己弄点可爱些的模型</p>
+		    </div>
+			<div id="alien"></div>
+		</section>
+	</div>
+	
+		
+		<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"2","bdPos":"left","bdTop":"250"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+		<script type="text/javascript">
+			$(".main").onepage_scroll({
+				sectionContainer: "section",     
+   				easing: "ease",                                   
+			    animationTime: 1000,            
+			    pagination: true,                
+			    updateURL: false,                
+			    beforeMove: function(index) {},  
+			    afterMove: function(index) {},   
+			    loop: true,                     
+			    keyboard: true,                  
+			    responsiveFallback: 600 
+			});
+			$(document).ready(function(){
+				$(".divIntroduction p").hide();
+				$(".divIntroduction h1").toggle(function(){
+					var str = "↑";
+					var text = $(this).html().substr(1,4);
+					str += text;
+					$(this).html(str);
+					$(this).siblings().slideDown(500);
+					$(this).animate({"width":"260px"},500);
+				},function(){
+					var str = "↓";
+					var text = $(this).html().substr(1,4);
+					str += text;
+					$(this).html(str);
+					$(this).siblings().slideUp(500);
+					$(this).animate({"width":"219px"},500);
+				});
+			})
+		</script>
+		<script type="text/javascript">
+			console.log("%c 咦，怎么来看我的源代码啦?难道出Bug了?? \n author:唐泽雄 email: 476490767@qq.com","background: rgba(252,234,187,1);background: -moz-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%,rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252,234,187,1)), color-stop(12%, rgba(175,250,77,1)), color-stop(28%, rgba(0,247,49,1)), color-stop(39%, rgba(0,210,247,1)), color-stop(51%, rgba(0,189,247,1)), color-stop(64%, rgba(133,108,217,1)), color-stop(78%, rgba(177,0,247,1)), color-stop(87%, rgba(247,0,189,1)), color-stop(100%, rgba(245,22,52,1)));background: -webkit-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -o-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: -ms-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);background: linear-gradient(to right, rgba(252,234,187,1) 0%, rgba(175,250,77,1) 12%, rgba(0,247,49,1) 28%, rgba(0,210,247,1) 39%, rgba(0,189,247,1) 51%, rgba(133,108,217,1) 64%, rgba(177,0,247,1) 78%, rgba(247,0,189,1) 87%, rgba(245,22,52,1) 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#f51634', GradientType=1 );font-size:5em");
+
+		</script>
+	</body>
+</html>
+
